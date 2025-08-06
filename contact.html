@@ -127,26 +127,26 @@
 <body>
     <div class="form-container">
         <h1 class="form-title">Contact Us</h1>
-        <form id="contactForm" name="contact" method="POST" data-netlify="true">
+        <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="h-field">
             <input type="hidden" name="form-name" value="contact" />
             <div class="form-group">
                 <label for="name">Name <span class="required">*</span></label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name"  required="required" placeholder="Pat Doe">
             </div>
 
             <div class="form-group">
                 <label for="email">Email <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="PatD@email.com" required="required">
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone">
+                <input type="tel" id="phone" name="phone" pattern="1?[0-9]{3}-?[0-9]{3}-?[0-9]{4}" placeholder="555-867-5309">
             </div>
 
             <div class="form-group">
                 <label for="message">Message <span class="required">*</span></label>
-                <textarea id="message" name="message" placeholder="Tell us how we can help you..." required></textarea>
+                <textarea id="message" name="message" placeholder="Tell us how we can help you..." required="required"></textarea>
             </div>
 
             <button type="submit" class="submit-btn">Send Message</button>
