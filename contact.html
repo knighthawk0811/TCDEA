@@ -127,7 +127,8 @@
 <body>
     <div class="form-container">
         <h1 class="form-title">Contact Us</h1>
-        <form id="contactForm" action="#" method="POST">
+        <form id="contactForm" name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact" />
             <div class="form-group">
                 <label for="name">Name <span class="required">*</span></label>
                 <input type="text" id="name" name="name" required>
@@ -153,33 +154,59 @@
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        const handleSubmit = (event) => {
+            event.preventDefault();
             
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
+            const form = event.target;
+            const formData = new FormData(form);
             
-            // Simple validation
-            if (!data.name || !data.email || !data.message) {
+            // Client-side validation
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+            
+            if (!name || !email || !message) {
                 alert('Please fill in all required fields.');
                 return;
             }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
+            if (!emailRegex.test(email)) {
                 alert('Please enter a valid email address.');
                 return;
             }
             
-            // Success message (in a real application, you would send this data to a server)
-            alert('Thank you for your message! We\'ll get back to you soon.');
-            console.log('Form submitted with data:', data);
+            // Update button text to show loading state
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
             
-            // Reset form
-            this.reset();
-        });
+            // Submit to Netlify
+            fetch("/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded" 
+                },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                alert('Thank you for your message! We\'ll get back to you soon.');
+                form.reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('There was an error submitting your form. Please try again.');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        };
+        
+        document.getElementById('contactForm').addEventListener('submit', handleSubmit);
     </script>
 </body>
 </html>
