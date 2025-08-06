@@ -191,7 +191,8 @@
             })
             .then(() => {
                 alert('Thank you for your message! We\'ll get back to you soon.');
-                form.reset();
+                //form.reset();
+                submitBtn.textContent = 'Message Sent.';
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -199,8 +200,8 @@
             })
             .finally(() => {
                 // Reset button state
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                //submitBtn.textContent = originalText;
+                //submitBtn.disabled = false;
             });
         };
         
